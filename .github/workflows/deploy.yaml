@@ -3,12 +3,12 @@ name: Node.js CI/CD
 on:
   push:
     branches:
-      - Master
+      - main
       - Staging
 
 jobs:
   deploy-production:
-    if: github.ref == 'refs/heads/Master'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
