@@ -36,7 +36,7 @@ const specs = swaggerJsDoc(options);
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://main.d19eu3ca4s0hn8.amplifyapp.com/", // Allow only your frontend
+    origin: "*", // Allow only your frontend
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
     credentials: true, // Allow cookies if needed
   })
