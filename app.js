@@ -10,4 +10,8 @@ app.get("/", async (req, res) => {
   res.json({ message: "Hola, desplegado" });
 });
 
+app.get("/hola", async (req, res) => {
+  res.json({ message: "HOLA se subio a main correctamente" });
+});
+
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));

@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "my-app", // Name of your app
+      name: "production", // Name of your app
       script: "./app.js", // Path to your entry file (e.g., app.js, server.js, etc.)
       instances: "max", // Run maximum instances of your app based on available CPU cores
       exec_mode: "cluster", // Use cluster mode for load balancing (optional)
