@@ -78,7 +78,7 @@ exports.login = async (req, res, next) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "required",
+      sameSite: "None",
     });
 
     res.json({ message: "Inicio de sesion exitoso" });
