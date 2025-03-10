@@ -42,13 +42,10 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, origin);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: [
+      "http://localhost:5173",
+      "https://main.d19eu3ca4s0hn8.amplifyapp.com",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true, // ✅ Allow cookies
   })
