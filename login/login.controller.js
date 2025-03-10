@@ -75,7 +75,13 @@ exports.login = async (req, res, next) => {
       expiresIn: "1h",
     });
 
-    res.json({ token });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "required",
+    });
+
+    res.json({ message: "Inicio de sesion exitoso" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error al iniciar sesión", error });
