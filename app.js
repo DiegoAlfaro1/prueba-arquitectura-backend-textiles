@@ -34,9 +34,20 @@ const specs = swaggerJsDoc(options);
 // Middleware para Swagger UI
 
 app.use(express.json());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://main.d19eu3ca4s0hn8.amplifyapp.com",
+];
+
 app.use(
   cors({
-    origin: "https://main.d19eu3ca4s0hn8.amplifyapp.com", // Allow only your frontend
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, origin);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true, // Allow cookies & auth headers
   })
