@@ -36,11 +36,13 @@ const specs = swaggerJsDoc(options);
 app.use(express.json());
 app.use(
   cors({
-    origin: "*", // Allow only your frontend
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
-    credentials: true, // Allow cookies if needed
+    origin: "https://main.d19eu3ca4s0hn8.amplifyapp.com", // Allow only your frontend
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, // Allow cookies & auth headers
   })
 );
+app.options("*", cors()); // Handle preflight requests
+
 app.use(cookieParser());
 
 app.get("/", async (req, res) => {

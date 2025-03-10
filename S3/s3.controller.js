@@ -34,6 +34,8 @@ exports.upload = async (req, res, next) => {
     //retorna el url del archivo que se subio
     const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/uploads/${fileName}`;
     console.log("Se subio con exito");
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
     res.json({ fileUrl });
   } catch (error) {
     console.error("S3 Upload Error:", error);
