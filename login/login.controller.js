@@ -43,7 +43,6 @@ exports.login = async (req, res, next) => {
   const { email, password, name } = req.body;
 
   console.log(email, password);
-  console.log(typeof email, typeof password);
 
   if (!email || !password) {
     return res.status(400).json({ message: "Se necesita email y contraseña" });
@@ -75,7 +74,14 @@ exports.login = async (req, res, next) => {
       expiresIn: "1h",
     });
 
-    res.json({ token });
+    // ✅ Set token in an httpOnly cookie
+    res.cookie("token", token, {
+      httpOnly: true, // ✅ Prevent access via JavaScript (secure)
+      secure: true, // ✅ Required for HTTPS (change to false for localhost)
+      sameSite: "None", // ✅ Required for cross-origin authentication
+    });
+
+    res.status(200).json({ message: "Login exitoso" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error al iniciar sesión", error });

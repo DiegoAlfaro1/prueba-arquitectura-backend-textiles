@@ -34,6 +34,7 @@ const specs = swaggerJsDoc(options);
 // Middleware para Swagger UI
 
 app.use(express.json());
+
 const allowedOrigins = [
   "http://localhost:5173",
   "https://main.d19eu3ca4s0hn8.amplifyapp.com",
@@ -49,10 +50,9 @@ app.use(
       }
     },
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, // Allow cookies & auth headers
+    credentials: true, // ✅ Allow cookies
   })
 );
-app.options("*", cors()); // Handle preflight requests
 
 app.use(cookieParser());
 
