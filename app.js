@@ -11,7 +11,6 @@ const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 
 const app = express();
-const PORT = process.env.port || 3000;
 
 // login using jwt
 
@@ -66,4 +65,10 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 //http://localhost:3000/s3/upload
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const port = process.env.PORT || 5000;
+
+app.listen(port, () =>
+  console.log(
+    `Server running on port ${port} ${port} in ${process.env.NODE_ENV} mode.`
+  )
+);
