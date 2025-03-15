@@ -24,7 +24,7 @@ const options = {
     },
     servers: [
       {
-        url: "https://main.d19eu3ca4s0hn8.amplifyapp.com/",
+        url: "https://nr8nw243lb.execute-api.us-east-1.amazonaws.com",
       },
     ],
   },
