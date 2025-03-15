@@ -2,6 +2,67 @@ const express = require("express");
 const router = express.Router();
 const controllers = require("./Controllers/login.controller");
 
+/**
+ * @swagger
+ * /api/register:
+ *   post:
+ *     summary: User registration
+ *     description: Registrar un nuevo usuario con nombre, correo y contraseña
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: user@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: "securepassword"
+ *               name:
+ *                 type: string
+ *                 example: "John Doe"
+ *     responses:
+ *       201:
+ *         description: Registro exitoso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Registrado exitosamente"
+ *       401:
+ *         description: No se envio emai o contraseña.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Se ocupa el mail y contra"
+ *       500:
+ *         description: Server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
+ */
 router.post("/register", controllers.register);
 
 /**
@@ -35,7 +96,7 @@ router.post("/register", controllers.register);
  *                 example: "John Doe"
  *     responses:
  *       200:
- *         description: Login successful. JWT token is set in cookies.
+ *         description: Login exitoso. JWT token se guarda en las cookies.
  *         content:
  *           application/json:
  *             schema:
@@ -45,7 +106,7 @@ router.post("/register", controllers.register);
  *                   type: string
  *                   example: "Inicio de sesión exitoso"
  *       400:
- *         description: Missing email or password.
+ *         description: No se envio email o contraseña.
  *         content:
  *           application/json:
  *             schema:
@@ -55,7 +116,7 @@ router.post("/register", controllers.register);
  *                   type: string
  *                   example: "Se necesita email y contraseña"
  *       401:
- *         description: Unauthorized - User not found or incorrect password.
+ *         description: No existe el usuario en la base de datos.
  *         content:
  *           application/json:
  *             schema:
@@ -75,7 +136,6 @@ router.post("/register", controllers.register);
  *                   type: string
  *                   example: "Error al iniciar sesión"
  */
-
 router.post("/login", controllers.login);
 
 module.exports = router;
