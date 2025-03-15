@@ -18,7 +18,7 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "API de ejemplo",
+      title: "API de capacitacion de react",
       version: "1.0.0",
       description: "Documentación generada con Swagger",
     },
@@ -28,7 +28,7 @@ const options = {
       },
     ],
   },
-  apis: ["login/login.routes.js"], // Ruta donde están definidas tus rutas
+  apis: ["./login/login.routes.js", "./S3/s3.routes.js"], // Ruta donde están definidas tus rutas
 };
 
 const specs = swaggerJsDoc(options);
@@ -36,11 +36,6 @@ const specs = swaggerJsDoc(options);
 // Middleware para Swagger UI
 
 app.use(express.json());
-
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://main.d19eu3ca4s0hn8.amplifyapp.com",
-];
 
 app.use(
   cors({
@@ -62,8 +57,6 @@ app.get("/", async (req, res) => {
 app.use("/api", rutasLogin);
 app.use("/s3", rutasS3);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
-
-//http://localhost:3000/s3/upload
 
 const port = process.env.PORT || 5000;
 
