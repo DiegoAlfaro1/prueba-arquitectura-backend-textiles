@@ -13,7 +13,7 @@ const generateFileName = (originalName) => {
   return `${Date.now()}-${randomBytes}${path.extname(originalName)}`;
 };
 
-exports.upload = async (req, res, next) => {
+exports.upload = async (req, res) => {
   if (!req.file) {
     console.log("No hay archivo");
     return res.status(400).json({ error: "No file uploaded" });

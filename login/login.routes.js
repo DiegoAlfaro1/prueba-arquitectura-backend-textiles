@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const controllers = require("./Controllers/login.controller");
+const authorizeToken = require("../util/authorizeToken");
 
 /**
  * @swagger
@@ -137,5 +138,14 @@ router.post("/register", controllers.register);
  *                   example: "Error al iniciar sesión"
  */
 router.post("/login", controllers.login);
+
+router.get("/auth/me", authorizeToken, (req, res) => {
+  res.json({ user: req.user }); // Send user data if token is valid
+});
+
+router.post("/logout", (req, res) => {
+  res.clearCookie("token", { httpOnly: true, secure: true, sameSite: "None" });
+  res.json({ message: "Logged out successfully" });
+});
 
 module.exports = router;

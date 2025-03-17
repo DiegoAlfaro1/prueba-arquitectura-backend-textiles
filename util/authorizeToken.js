@@ -17,6 +17,6 @@ module.exports = async (req, res, next) => {
     next();
   } catch (err) {
     console.log("no Verificado");
-    res.status(401).json({ message: "Token inválido" });
+    res.status(401).json({ message: "Token inválido", error: err });
   }
 };

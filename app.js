@@ -28,7 +28,7 @@ const options = {
       },
     ],
   },
-  apis: ["./login/login.routes.js", "./S3/s3.routes.js"], // Ruta donde están definidas tus rutas
+  apis: ["./login/login.routes.js", "./S3/s3.routes.js"],
 };
 
 const specs = swaggerJsDoc(options);
@@ -63,5 +63,4 @@ const port = process.env.PORT || 5000;
 app.listen(port, () =>
   console.log(
     `Server running on port ${port} ${port} in ${process.env.NODE_ENV} mode.`
-  )
-);
+  ));
