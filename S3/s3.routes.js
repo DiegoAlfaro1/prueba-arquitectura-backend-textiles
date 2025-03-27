@@ -64,11 +64,6 @@ const upload = multer({ storage });
  *                   example: "Failed to upload file"
  */
 
-router.post(
-  "/upload",
-  authorizeToken,
-  upload.single("file"),
-  controladores.upload
-);
+router.post("/upload", upload.single("file"), controladores.upload);
 
 module.exports = router;
