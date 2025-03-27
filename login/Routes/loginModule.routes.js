@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const controllers = require("./Controllers/login.controller");
-const authorizeToken = require("../util/authorizeToken");
+const loginController = require("../Controllers/login.controller");
+const registerController = require("../Controllers/register.controller");
+const authorizeToken = require("../../util/authorizeToken");
 
 /**
  * @swagger
@@ -64,7 +65,7 @@ const authorizeToken = require("../util/authorizeToken");
  *                   type: string
  *                   example: "Internal server error"
  */
-router.post("/register", controllers.register);
+router.post("/register", registerController.register);
 
 /**
  * @swagger
@@ -137,7 +138,7 @@ router.post("/register", controllers.register);
  *                   type: string
  *                   example: "Error al iniciar sesión"
  */
-router.post("/login", controllers.login);
+router.post("/login", loginController.login);
 
 router.get("/auth/me", authorizeToken, (req, res) => {
   res.json({ user: req.user }); // Send user data if token is valid

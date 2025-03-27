@@ -5,10 +5,11 @@ dotenv.config({ path: envFile });
 const cors = require("cors");
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const rutasLogin = require("./login/login.routes");
+const rutasLogin = require("./login/Routes/loginModule.routes");
 const rutasS3 = require("./S3/s3.routes");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
+const checkHeader = require("./util/checkHeader");
 
 const app = express();
 
@@ -28,7 +29,7 @@ const options = {
       },
     ],
   },
-  apis: ["./login/login.routes.js", "./S3/s3.routes.js"],
+  apis: ["./login/Routes/loginModule.routes.js", "./S3/s3.routes.js"],
 };
 
 const specs = swaggerJsDoc(options);
@@ -48,6 +49,8 @@ app.use(
   })
 );
 
+app.use(checkHeader("x-api-key", "Api key invalida"));
+
 app.use(cookieParser());
 
 app.get("/", async (req, res) => {
@@ -63,4 +66,5 @@ const port = process.env.PORT || 5000;
 app.listen(port, () =>
   console.log(
     `Server running on port ${port} ${port} in ${process.env.NODE_ENV} mode.`
-  ));
+  )
+);

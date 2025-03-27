@@ -26,12 +26,3 @@ exports.getUserByEmail = async (email, name) => {
   const response = await db.send(command);
   return response.Item;
 };
-
-exports.getUserById = async (id) => {
-  const command = new GetCommand({
-    TableName: TABLE_NAME,
-    Key: { id },
-  });
-  const response = await db.send(command);
-  return response.Item;
-};
