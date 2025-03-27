@@ -5,13 +5,12 @@ const s3 = new S3Client({
 });
 
 module.exports = async (params) => {
-  let respuesta;
   try {
     await s3.send(new PutObjectCommand(params));
-    respuesta = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/uploads/${fileName}`;
-    return respuesta;
+    const fileName = params.Key;
+    return `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/uploads/${fileName}`;
   } catch (error) {
-    console.log(error);
-    return error;
+    console.error("Error uploading to S3:", error);
+    throw new Error("Failed to upload file to S3");
   }
 };

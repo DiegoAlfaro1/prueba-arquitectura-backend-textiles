@@ -1,7 +1,7 @@
+const enviarS3 = require("../util/enviarS3");
 const generarNombreUnico = require("../util/generarNombreUnico");
 
-//crear un S3, las credenciales las agarra directamente de el CLI de amazon
-
+// Crear un S3, las credenciales las agarra directamente del CLI de Amazon
 exports.upload = async (req, res) => {
   if (!req.file) {
     console.log("No hay archivo");
@@ -10,18 +10,21 @@ exports.upload = async (req, res) => {
 
   const fileName = generarNombreUnico(req.file.originalname);
 
-  // parametros para subir un objeto a s3
+  // Parámetros para subir un objeto a S3
   const params = {
-    Bucket: process.env.AWS_BUCKET_NAME, // The S3 bucket name (from environment variables)
-    Key: `uploads/${fileName}`, // The file path inside the bucket
-    Body: req.file.buffer, // The actual file data (from multer or similar middleware)
-    ContentType: req.file.mimetype, // The file's MIME type (e.g., image/png, application/pdf)
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: `uploads/${fileName}`,
+    Body: req.file.buffer,
+    ContentType: req.file.mimetype || "application/octet-stream",
   };
 
   try {
-    let urlArchivo = await enviarS3(params);
+    const urlArchivo = await enviarS3(params, fileName);
     res.json({ message: "Subido exitosamente", url: urlArchivo });
   } catch (error) {
-    res.status(500).json({ message: "Error al subir archivo", error: error });
+    console.error("Error al subir archivo:", error);
+    res
+      .status(500)
+      .json({ message: "Error al subir archivo", error: error.message });
   }
 };
