@@ -11,6 +11,7 @@ module.exports = async (params) => {
     respuesta = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/uploads/${fileName}`;
     return respuesta;
   } catch (error) {
+    console.log(error);
     return error;
   }
 };
