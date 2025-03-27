@@ -10,8 +10,7 @@ module.exports = async (params) => {
     await s3.send(new PutObjectCommand(params));
     respuesta = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/uploads/${fileName}`;
     return respuesta;
-  } catch {
-    respuesta = "Error en subida de archivo";
-    return respuesta;
+  } catch (error) {
+    return error;
   }
 };

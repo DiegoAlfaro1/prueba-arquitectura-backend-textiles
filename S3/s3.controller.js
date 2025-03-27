@@ -21,7 +21,7 @@ exports.upload = async (req, res) => {
   try {
     let urlArchivo = await enviarS3(params);
     res.json({ message: "Subido exitosamente", url: urlArchivo });
-  } catch {
-    res.status(500).json({ message: "Error al subir archivo" });
+  } catch (error) {
+    res.status(500).json({ message: "Error al subir archivo", error: error });
   }
 };
