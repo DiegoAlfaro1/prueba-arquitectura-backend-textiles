@@ -65,7 +65,11 @@ const authorizeToken = require("../../util/authorizeToken");
  *                   type: string
  *                   example: "Internal server error"
  */
-router.post("/register", registerController.register);
+router.post(
+  "/register",
+  checkHeader("x-api-key", "Api key invalida"),
+  registerController.register
+);
 
 /**
  * @swagger
@@ -138,15 +142,32 @@ router.post("/register", registerController.register);
  *                   type: string
  *                   example: "Error al iniciar sesión"
  */
-router.post("/login", loginController.login);
+router.post(
+  "/login",
+  checkHeader("x-api-key", "Api key invalida"),
+  loginController.login
+);
 
-router.get("/auth/me", authorizeToken, (req, res) => {
-  res.json({ user: req.user }); // Send user data if token is valid
-});
+router.get(
+  "/auth/me",
+  checkHeader("x-api-key", "Api key invalida"),
+  authorizeToken,
+  (req, res) => {
+    res.json({ user: req.user }); // Send user data if token is valid
+  }
+);
 
-router.post("/logout", (req, res) => {
-  res.clearCookie("token", { httpOnly: true, secure: true, sameSite: "None" });
-  res.json({ message: "Logged out successfully" });
-});
+router.post(
+  "/logout",
+  checkHeader("x-api-key", "Api key invalida"),
+  (req, res) => {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
+    res.json({ message: "Logged out successfully" });
+  }
+);
 
 module.exports = router;
