@@ -8,9 +8,9 @@ exports.register = async (req, res) => {
     return res.status(401).json({ message: "Se ocupa el mail y contra" });
   }
 
-  const user = new User(name, email, password);
-
   try {
+    const user = new User(name, email, password);
+    await user.hashPassword();
     await userRepository.createUser(user);
     res.status(201).json({ message: "Registrado exitosamente" });
   } catch (error) {

@@ -4,11 +4,12 @@ class User {
   constructor(name, email, password) {
     this.name = name;
     this.email = email;
-    this.password = hashPassword(password);
+    this.password = password;
   }
 
-  static async hashPassword(password) {
-    return await bcrypt.hash(password, 10);
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+    return this;
   }
 }
 
