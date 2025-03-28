@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 
-export class User {
+class User {
   constructor(name, email, password) {
     this.name = name;
     this.email = email;
@@ -11,3 +11,5 @@ export class User {
     return (hashedPassword = await bcrypt.hash(password, 10));
   }
 }
+
+module.exports = User;
