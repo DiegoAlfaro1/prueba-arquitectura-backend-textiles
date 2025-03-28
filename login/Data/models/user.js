@@ -8,7 +8,7 @@ class User {
   }
 
   static async hashPassword(password) {
-    return (hashedPassword = await bcrypt.hash(password, 10));
+    return await bcrypt.hash(password, 10);
   }
 }
 
