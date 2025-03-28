@@ -1,5 +1,5 @@
 const userRepository = require("../Data/userRepository");
-const { User } = require("../Data/models/user");
+const User = require("../Data/models/user");
 
 exports.register = async (req, res) => {
   const { email, password, name } = req.body;
