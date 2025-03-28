@@ -49,11 +49,9 @@ app.use(
   })
 );
 
-app.use(checkHeader("x-api-key", "Api key invalida"));
-
 app.use(cookieParser());
 
-app.get("/", async (req, res) => {
+app.get("/", checkHeader("x-api-key", "Api key invalida"), async (req, res) => {
   res.status(201).json({ message: "Pene" });
 });
 
