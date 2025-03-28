@@ -3,6 +3,7 @@ const router = express.Router();
 const loginController = require("../Controllers/login.controller");
 const registerController = require("../Controllers/register.controller");
 const authorizeToken = require("../../util/authorizeToken");
+const checkHeader = require("../../util/checkHeader");
 
 /**
  * @swagger
