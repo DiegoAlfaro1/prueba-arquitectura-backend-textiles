@@ -45,6 +45,7 @@ app.use(
       "https://main.d19eu3ca4s0hn8.amplifyapp.com",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "x-api-key"],
     credentials: true, // ✅ Allow cookies
   })
 );
