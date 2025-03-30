@@ -1,11 +1,11 @@
 const enviarS3 = require("../util/enviarS3");
 const generarNombreUnico = require("../util/generarNombreUnico");
-import {
+const {
   S3Client,
   GetObjectCommand,
   ListObjectsV2Command,
-} from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+} = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
 // Crear un S3, las credenciales las agarra directamente del CLI de Amazon
 exports.upload = async (req, res) => {
@@ -57,7 +57,7 @@ exports.getUrl = async (req, res) => {
     const filename = req.params.filename;
     const objectKey = `${FOLDER_NAME}/${filename}`;
 
-    const presignedUrl = await generatePresignedUrl(objectKey);
+    const presignedUrl = await generarUrlPrefirmado(objectKey);
 
     res.json({
       success: true,
