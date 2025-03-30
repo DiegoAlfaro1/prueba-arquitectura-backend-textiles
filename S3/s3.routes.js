@@ -66,4 +66,6 @@ const upload = multer({ storage });
 
 router.post("/upload", upload.single("file"), controladores.upload);
 
+router.get("/images/:filename", controladores.getUrl);
+
 module.exports = router;
