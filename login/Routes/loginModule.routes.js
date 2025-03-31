@@ -9,8 +9,8 @@ const checkHeader = require("../../util/checkHeader");
  * @swagger
  * /api/register:
  *   post:
- *     summary: User registration
- *     description: Registrar un nuevo usuario con nombre, correo y contraseña
+ *     summary: Registro de usuario
+ *     description: Registra un nuevo usuario con nombre, correo y contraseña.
  *     tags:
  *       - Auth
  *     requestBody:
@@ -33,7 +33,7 @@ const checkHeader = require("../../util/checkHeader");
  *                 example: "securepassword"
  *               name:
  *                 type: string
- *                 example: "John Doe"
+ *                 example: "Juan Pérez"
  *     responses:
  *       201:
  *         description: Registro exitoso.
@@ -46,7 +46,7 @@ const checkHeader = require("../../util/checkHeader");
  *                   type: string
  *                   example: "Registrado exitosamente"
  *       401:
- *         description: No se envio emai o contraseña.
+ *         description: No se proporcionó email o contraseña.
  *         content:
  *           application/json:
  *             schema:
@@ -56,7 +56,7 @@ const checkHeader = require("../../util/checkHeader");
  *                   type: string
  *                   example: "Se ocupa el mail y contra"
  *       500:
- *         description: Server error.
+ *         description: Error del servidor.
  *         content:
  *           application/json:
  *             schema:
@@ -64,7 +64,7 @@ const checkHeader = require("../../util/checkHeader");
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Internal server error"
+ *                   example: "Error interno del servidor"
  */
 router.post(
   "/register",
@@ -76,8 +76,8 @@ router.post(
  * @swagger
  * /api/login:
  *   post:
- *     summary: User login
- *     description: Autenticar al usuario usando el nombre correo y nombre, regresar un JWT
+ *     summary: Inicio de sesión
+ *     description: Autentica al usuario utilizando el nombre, correo y contraseña, y devuelve un JWT.
  *     tags:
  *       - Auth
  *     requestBody:
@@ -100,10 +100,10 @@ router.post(
  *                 example: "yourpassword"
  *               name:
  *                 type: string
- *                 example: "John Doe"
+ *                 example: "Juan Pérez"
  *     responses:
  *       200:
- *         description: Login exitoso. JWT token se guarda en las cookies.
+ *         description: Inicio de sesión exitoso. El token JWT se guarda en las cookies.
  *         content:
  *           application/json:
  *             schema:
@@ -113,7 +113,7 @@ router.post(
  *                   type: string
  *                   example: "Inicio de sesión exitoso"
  *       400:
- *         description: No se envio email o contraseña.
+ *         description: No se proporcionó email o contraseña.
  *         content:
  *           application/json:
  *             schema:
@@ -123,7 +123,7 @@ router.post(
  *                   type: string
  *                   example: "Se necesita email y contraseña"
  *       401:
- *         description: No existe el usuario en la base de datos.
+ *         description: Usuario no encontrado.
  *         content:
  *           application/json:
  *             schema:
@@ -132,8 +132,18 @@ router.post(
  *                 message:
  *                   type: string
  *                   example: "Usuario no encontrado"
+ *      401:
+ *         description: Contraseña incorrecta.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Contraseña incorrecta"
  *       500:
- *         description: Server error.
+ *         description: Error del servidor.
  *         content:
  *           application/json:
  *             schema:
@@ -149,15 +159,75 @@ router.post(
   loginController.login
 );
 
+/**
+ * @swagger
+ * /api/auth/me:
+ *   get:
+ *     summary: Obtener usuario autenticado
+ *     description: Retorna la información del usuario autenticado basado en el token JWT almacenado en las cookies.
+ *     tags:
+ *       - Auth
+ *     responses:
+ *       200:
+ *         description: Datos del usuario autenticado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   type: object
+ *                   example: { "email": "user@example.com", "name": "Juan Pérez" }
+ *       403:
+ *         description: Acceso denegado por falta de token.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Acceso denegado"
+ *       401:
+ *         description: Token inválido.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Token inválido"
+ */
 router.get(
   "/auth/me",
   checkHeader("x-api-key", "Api key invalida"),
   authorizeToken,
   (req, res) => {
-    res.json({ user: req.user }); // Send user data if token is valid
+    res.json({ user: req.user });
   }
 );
 
+/**
+ * @swagger
+ * /api/logout:
+ *   post:
+ *     summary: Cerrar sesión
+ *     description: Cierra la sesión del usuario eliminando la cookie del token JWT.
+ *     tags:
+ *       - Auth
+ *     responses:
+ *       200:
+ *         description: Cierre de sesión exitoso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Logged out successfully"
+ */
 router.post(
   "/logout",
   checkHeader("x-api-key", "Api key invalida"),
