@@ -123,7 +123,7 @@ router.post(
  *                   type: string
  *                   example: "Se necesita email y contraseña"
  *       401:
- *         description: Usuario no encontrado.
+ *         description: Usuario no encontrado o contraseña incorrecta.
  *         content:
  *           application/json:
  *             schema:
@@ -131,17 +131,7 @@ router.post(
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Usuario no encontrado"
- *      401:
- *         description: Contraseña incorrecta.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Contraseña incorrecta"
+ *                   example: "Usuario no encontrado o contraseña incorrecta"
  *       500:
  *         description: Error del servidor.
  *         content:
@@ -153,6 +143,7 @@ router.post(
  *                   type: string
  *                   example: "Error al iniciar sesión"
  */
+
 router.post(
   "/login",
   checkHeader("x-api-key", "Api key invalida"),

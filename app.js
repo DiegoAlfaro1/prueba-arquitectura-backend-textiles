@@ -6,7 +6,7 @@ const cors = require("cors");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const rutasLogin = require("./login/Routes/loginModule.routes");
-const rutasS3 = require("./S3/s3.routes");
+const rutasS3 = require("./S3/Routes/s3.routes");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const checkHeader = require("./util/checkHeader");
@@ -29,7 +29,7 @@ const options = {
       },
     ],
   },
-  apis: ["./login/Routes/loginModule.routes.js", "./S3/s3.routes.js"],
+  apis: ["./login/Routes/loginModule.routes.js", "./S3/Routes/s3.routes.js"],
 };
 
 const specs = swaggerJsDoc(options);
