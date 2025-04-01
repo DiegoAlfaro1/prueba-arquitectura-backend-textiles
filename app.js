@@ -1,6 +1,5 @@
 const dotenv = require("dotenv");
-dotenv.config({ path: '.env.staging' });
-
+dotenv.config({ path: ".env.staging" });
 
 const cors = require("cors");
 const express = require("express");
@@ -8,7 +7,7 @@ const cookieParser = require("cookie-parser");
 
 const rutasLogin = require("./login/Routes/loginModule.routes");
 const rutasS3 = require("./S3/Routes/s3.routes");
-const mercadoPagoRoutes = require('./login/Routes/mercadoPago.routes'); // ✅ Importa la ruta
+const mercadoPagoRoutes = require("./login/Routes/mercadoPago.routes"); // ✅ Importa la ruta
 
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
@@ -34,7 +33,7 @@ const options = {
   apis: [
     "./login/Routes/loginModule.routes.js",
     "./S3/Routes/s3.routes.js",
-    "./Routes/mercadoPago.routes.js" 
+    "./Routes/mercadoPago.routes.js",
   ],
 };
 
@@ -47,7 +46,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://main.d19eu3ca4s0hn8.amplifyapp.com",
+      "https://main.d3qkjaze9notik.amplifyapp.com",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "x-api-key"],
@@ -71,7 +70,5 @@ app.get("/", checkHeader("x-api-key", "Api key invalida"), async (req, res) => {
 // Server
 const port = process.env.PORT || 5000;
 app.listen(port, () =>
-  console.log(
-    `Server running on port ${port} in ${process.env.NODE_ENV} mode.`
-  )
+  console.log(`Server running on port ${port} in ${process.env.NODE_ENV} mode.`)
 );
