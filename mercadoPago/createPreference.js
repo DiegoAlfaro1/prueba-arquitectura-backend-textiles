@@ -12,9 +12,9 @@ const createPreference = async (products) => {
   const preference = {
     items,
     back_urls: {
-      success: 'http://localhost:5173/exito',
-      failure: 'http://localhost:5173/fallo',
-      pending: 'http://localhost:5173/pendiente',
+      success: 'http://localhost:4000/exito',
+      failure: 'http://localhost:4000/fallo',
+      pending: 'http://localhost:4000/pendiente',
     },
     auto_return: 'approved',
   };
