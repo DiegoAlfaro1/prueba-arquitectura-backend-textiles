@@ -1,25 +1,27 @@
 const dotenv = require("dotenv");
-const envFile = `.env.${process.env.NODE_ENV || "staging"}`; // Defaults to 'development' if NODE_ENV is not set
-dotenv.config({ path: envFile });
+dotenv.config({ path: '.env.staging' });
+
 
 const cors = require("cors");
 const express = require("express");
 const cookieParser = require("cookie-parser");
+
 const rutasLogin = require("./login/Routes/loginModule.routes");
 const rutasS3 = require("./S3/Routes/s3.routes");
+const mercadoPagoRoutes = require('./login/Routes/mercadoPago.routes'); // ✅ Importa la ruta
+
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const checkHeader = require("./util/checkHeader");
 
-const app = express();
+const app = express(); // ✅ Aquí debe ir antes de usar app.use()
 
-// login using jwt
-
+// Swagger config
 const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "API de capacitacion de react",
+      title: "API de capacitación de React",
       version: "1.0.0",
       description: "Documentación generada con Swagger",
     },
@@ -29,13 +31,16 @@ const options = {
       },
     ],
   },
-  apis: ["./login/Routes/loginModule.routes.js", "./S3/Routes/s3.routes.js"],
+  apis: [
+    "./login/Routes/loginModule.routes.js",
+    "./S3/Routes/s3.routes.js",
+    "./Routes/mercadoPago.routes.js" 
+  ],
 };
 
 const specs = swaggerJsDoc(options);
 
-// Middleware para Swagger UI
-
+// Middlewares
 app.use(express.json());
 
 app.use(
@@ -46,24 +51,27 @@ app.use(
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "x-api-key"],
-    credentials: true, // ✅ Allow cookies
+    credentials: true,
   })
 );
 
 app.use(cookieParser());
 
+// Rutas
+app.use("/api", rutasLogin);
+app.use("/s3", rutasS3);
+app.use("/api/mercadopago", mercadoPagoRoutes); // ✅ Ruta de Mercado Pago
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+
+// Ruta test protegida con header
 app.get("/", checkHeader("x-api-key", "Api key invalida"), async (req, res) => {
   res.status(201).json({ message: "Pene" });
 });
 
-app.use("/api", rutasLogin);
-app.use("/s3", rutasS3);
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
-
+// Server
 const port = process.env.PORT || 5000;
-
 app.listen(port, () =>
   console.log(
-    `Server running on port ${port} ${port} in ${process.env.NODE_ENV} mode.`
+    `Server running on port ${port} in ${process.env.NODE_ENV} mode.`
   )
 );
