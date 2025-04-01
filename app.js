@@ -34,7 +34,7 @@ const options = {
   apis: [
     "./login/Routes/loginModule.routes.js",
     "./S3/Routes/s3.routes.js",
-    "./Routes/mercadoPago.routes.js" // ✅ Agregala si querés documentarla con Swagger
+    "./Routes/mercadoPago.routes.js" 
   ],
 };
 
@@ -60,7 +60,7 @@ app.use(cookieParser());
 // Rutas
 app.use("/api", rutasLogin);
 app.use("/s3", rutasS3);
-app.use("/mercadopago", mercadoPagoRoutes); // ✅ Ruta de Mercado Pago
+app.use("/api/mercadopago", mercadoPagoRoutes); // ✅ Ruta de Mercado Pago
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 // Ruta test protegida con header
