@@ -1,4 +1,4 @@
-const createPreference = require('../Services/createPreference');
+const createPreference = require('../../util/createPreference');
 
 const createPreferenceHandler = async (req, res) => {
   try {
