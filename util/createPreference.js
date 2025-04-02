@@ -1,4 +1,4 @@
-const mercadopago = require('../util/configMercadoPago');
+const mercadopago = require('./configMercadoPago');
 const { Preference } = require('mercadopago');
 
 const createPreference = async (products) => {
