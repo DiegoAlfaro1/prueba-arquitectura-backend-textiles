@@ -1,4 +1,4 @@
-const createPreference = require('../../mercadoPago/createPreference');
+const createPreference = require('../Services/createPreference');
 
 const createPreferenceHandler = async (req, res) => {
   try {

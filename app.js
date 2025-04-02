@@ -7,13 +7,13 @@ const cookieParser = require("cookie-parser");
 
 const rutasLogin = require("./login/Routes/loginModule.routes");
 const rutasS3 = require("./S3/Routes/s3.routes");
-const mercadoPagoRoutes = require("./login/Routes/mercadoPago.routes"); // ✅ Importa la ruta
+const mercadoPagoRoutes = require('./mercadoPago/Routes/mercadoPago.routes');
 
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const checkHeader = require("./util/checkHeader");
 
-const app = express(); // ✅ Aquí debe ir antes de usar app.use()
+const app = express(); 
 
 // Swagger config
 const options = {
@@ -59,7 +59,7 @@ app.use(cookieParser());
 // Rutas
 app.use("/api", rutasLogin);
 app.use("/s3", rutasS3);
-app.use("/api/mercadopago", mercadoPagoRoutes); // ✅ Ruta de Mercado Pago
+app.use("/api/mercadopago", mercadoPagoRoutes);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 // Ruta test protegida con header
