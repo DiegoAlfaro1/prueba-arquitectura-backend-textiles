@@ -33,7 +33,7 @@ const options = {
   apis: [
     "./login/Routes/loginModule.routes.js",
     "./S3/Routes/s3.routes.js",
-    "./Routes/mercadoPago.routes.js",
+    "./mercadoPago/Routes/mercadoPago.routes.js",
   ],
 };
 
