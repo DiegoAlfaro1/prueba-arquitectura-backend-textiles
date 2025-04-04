@@ -4,6 +4,7 @@ const loginController = require("../Controllers/login.controller");
 const registerController = require("../Controllers/register.controller");
 const authorizeToken = require("../../util/authorizeToken");
 const checkHeader = require("../../util/checkHeader");
+const validateRegister = require("../../util/validateRegister");
 
 /**
  * @swagger
@@ -68,6 +69,7 @@ const checkHeader = require("../../util/checkHeader");
  */
 router.post(
   "/register",
+  validateRegister,
   checkHeader("x-api-key", "Api key invalida"),
   registerController.register
 );

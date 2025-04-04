@@ -66,7 +66,7 @@ app.get("/csrf-token", csrfProtection, (req, res) => {
 
 // Rutas
 // app.use(csrfProtection);
-app.use("/api", csrfProtection, rutasLogin);
+app.use("/api", rutasLogin);
 app.use("/s3", rutasS3);
 app.use("/api/mercadopago", mercadoPagoRoutes);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
@@ -76,8 +76,15 @@ app.get("/", checkHeader("x-api-key", "Api key invalida"), async (req, res) => {
   res.status(201).json({ message: "Pene" });
 });
 
-// Server
 const port = process.env.PORT || 5000;
-app.listen(port, () =>
-  console.log(`Server running on port ${port} in ${process.env.NODE_ENV} mode.`)
-);
+
+// ✅ solo escucha si este archivo es ejecutado directamente (no durante tests)
+if (require.main === module) {
+  app.listen(port, () =>
+    console.log(
+      `Server running on port ${port} in ${process.env.NODE_ENV} mode.`
+    )
+  );
+}
+
+module.exports = app; // ✅ importante para usar en supertest
