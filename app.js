@@ -4,16 +4,17 @@ dotenv.config({ path: ".env.staging" });
 const cors = require("cors");
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const csrf = require("csurf");
 
 const rutasLogin = require("./login/Routes/loginModule.routes");
 const rutasS3 = require("./S3/Routes/s3.routes");
-const mercadoPagoRoutes = require('./mercadoPago/Routes/mercadoPago.routes');
+const mercadoPagoRoutes = require("./mercadoPago/Routes/mercadoPago.routes");
 
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const checkHeader = require("./util/checkHeader");
 
-const app = express(); 
+const app = express();
 
 // Swagger config
 const options = {
@@ -46,18 +47,26 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
+      "http://[::1]:5173",
       "https://main.d3qkjaze9notik.amplifyapp.com",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "x-api-key"],
+    allowedHeaders: ["Content-Type", "x-api-key", "X-CSRF-Token"],
     credentials: true,
   })
 );
 
 app.use(cookieParser());
 
+const csrfProtection = csrf({ cookie: true });
+
+app.get("/csrf-token", csrfProtection, (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
+});
+
 // Rutas
-app.use("/api", rutasLogin);
+// app.use(csrfProtection);
+app.use("/api", csrfProtection, rutasLogin);
 app.use("/s3", rutasS3);
 app.use("/api/mercadopago", mercadoPagoRoutes);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
