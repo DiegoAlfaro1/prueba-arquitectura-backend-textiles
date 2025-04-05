@@ -1,5 +1,3 @@
-// middlewares/validateAndSanitize.js
-
 const forbiddenPattern = /['";`]|(--)/; // caracteres típicos en inyecciones
 
 function validateAndSanitize(req, res, next) {

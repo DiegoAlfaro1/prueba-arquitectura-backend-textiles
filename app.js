@@ -78,7 +78,7 @@ app.get("/", checkHeader("x-api-key", "Api key invalida"), async (req, res) => {
 
 const port = process.env.PORT || 5000;
 
-// ✅ solo escucha si este archivo es ejecutado directamente (no durante tests)
+// Solo escucha si este archivo es ejecutado directamente (no durante tests).
 if (require.main === module) {
   app.listen(port, () =>
     console.log(
@@ -87,4 +87,4 @@ if (require.main === module) {
   );
 }
 
-module.exports = app; // ✅ importante para usar en supertest
+module.exports = app; 
