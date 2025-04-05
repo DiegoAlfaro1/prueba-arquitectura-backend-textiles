@@ -4,7 +4,7 @@ const loginController = require("../Controllers/login.controller");
 const registerController = require("../Controllers/register.controller");
 const authorizeToken = require("../../util/authorizeToken");
 const checkHeader = require("../../util/checkHeader");
-const validateRegister = require("../../util/validateRegister");
+const validateNoSQLInjection = require("../../util/validateNoSQLInjection");
 
 /**
  * @swagger
@@ -69,7 +69,7 @@ const validateRegister = require("../../util/validateRegister");
  */
 router.post(
   "/register",
-  validateRegister,
+  validateNoSQLInjection,
   checkHeader("x-api-key", "Api key invalida"),
   registerController.register
 );
@@ -148,6 +148,7 @@ router.post(
 
 router.post(
   "/login",
+  validateNoSQLInjection,
   checkHeader("x-api-key", "Api key invalida"),
   loginController.login
 );
