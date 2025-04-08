@@ -1,21 +1,23 @@
-/**
- * Función para insertar un ítem en una tabla de DynamoDB.
- *
- * @param {string} nombreTabla - El nombre de la tabla de DynamoDB donde se insertará el ítem.
- * @param {Object} modelo - El objeto que representa el ítem a insertar en la tabla.
- * @returns {Promise} - Promesa que resuelve con el resultado de la operación de inserción.
- */
-const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
-
-const clienteDynamo = new DynamoDBClient({ region: "us-east-1" });
-const db = DynamoDBDocumentClient.from(clienteDynamo);
+// insertItem.js
+const connection = require("./db"); // Import the connection from db.js
 
 module.exports = async (nombreTabla, modelo) => {
-  const comando = new PutCommand({
-    TableName: nombreTabla,
-    Item: modelo,
-  });
+  // Prepare the query for inserting a record into the MySQL table
+  const columns = Object.keys(modelo).join(", ");
+  const values = Object.values(modelo)
+    .map((value) => `'${value}'`)
+    .join(", ");
 
-  return db.send(comando);
+  const query = `INSERT INTO ${nombreTabla} (${columns}) VALUES (${values})`;
+
+  // Execute the query
+  return new Promise((resolve, reject) => {
+    connection.query(query, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
 };

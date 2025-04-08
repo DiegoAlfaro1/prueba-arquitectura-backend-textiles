@@ -1,21 +1,22 @@
-/**
- * Función para obtener un ítem de una tabla de DynamoDB usando las llaves proporcionadas.
- *
- * @param {string} nombreTabla - El nombre de la tabla de DynamoDB de la cual se va a obtener el ítem.
- * @param {Object} llaves - Un objeto que contiene las llaves para buscar el ítem en la tabla.
- * @returns {Promise<Object|null>} - Un objeto con los datos del ítem si se encuentra, o null si no se encuentra el ítem.
- */
-const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, GetCommand } = require("@aws-sdk/lib-dynamodb");
-
-const clienteDynamo = new DynamoDBClient({ region: "us-east-1" });
-const db = DynamoDBDocumentClient.from(clienteDynamo);
+// getItem.js
+const connection = require("./db"); // Import the connection from db.js
 
 module.exports = async (nombreTabla, llaves) => {
-  const comando = new GetCommand({
-    TableName: nombreTabla,
-    Key: llaves,
+  // Construct the WHERE clause based on the provided keys (llaves)
+  const conditions = Object.keys(llaves)
+    .map((key) => `${key} = '${llaves[key]}'`)
+    .join(" AND ");
+
+  const query = `SELECT * FROM ${nombreTabla} WHERE ${conditions}`;
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        // Return the first result (or null if no record is found)
+        resolve(results.length > 0 ? results[0] : null);
+      }
+    });
   });
-  const response = await db.send(comando);
-  return response.Item;
 };
