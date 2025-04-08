@@ -12,46 +12,46 @@ const safePayload = {
 
 const maliciousInputs = [
   // 1. Manipula lógica booleana
-  "email = :email OR attribute_exists(email)",
+  "' OR 1=1 --",
 
   // 2. Busca acceso con rol de admin
-  "role = :role OR contains(role, 'admin')",
+  "' OR role = 'admin' --",
 
   // 3. Condición siempre verdadera
-  "begins_with(email, 'admin') OR size(email) > 0",
+  "' OR 1=1",
 
   // 4. Afecta lógica con existencia/ausencia de atributos
-  "attribute_not_exists(password) OR attribute_exists(email)",
+  "' OR EXISTS(SELECT * FROM users WHERE email = 'admin') --",
 
   // 5. Evalúa tamaño para generar condiciones verdaderas
-  "size(email) > 0 OR contains(role, 'admin')",
+  "' OR LENGTH(email) > 0 --",
 
   // 6. Simula cierre de expresión + operador lógico
-  ") OR attribute_exists(name) OR (",
+  "' OR 1=1) --",
 
   // 7. Inserta condición válida para saltar seguridad
-  "email <> :email OR contains(email, 'hotmail')",
+  "' OR email = 'hola@hotmail.com' --",
 
   // 8. Lógica invertida y maliciosa
-  "NOT email = :email OR contains(role, 'admin')",
+  "' AND email != 'hola@hotmail.com' --",
 
   // 9. Condición redundante que puede romper lógica
-  "email = :email OR email = email",
+  "' OR email = email --",
 
   // 10. Intento de manipular expresión con uso de funciones válidas
-  "begins_with(name, 'a') OR attribute_exists(password)",
+  "' UNION SELECT username, password FROM users --",
 
-  // 11. Intenta inyectar un REMOVE dentro de una expresión de actualización
-  "SET name = :name; REMOVE password",
+  // 11. Intenta inyectar un DROP TABLE dentro de una expresión de actualización
+  "'; DROP TABLE users --",
 
-  // 12. Manipula valores dinámicos al nivel de ExpressionAttributeValues
-  ":email OR attribute_exists(email)",
+  // 12. Manipula valores dinámicos al nivel de parámetros
+  "' OR 1=1 --",
 
-  // 13. Intenta cerrar una expresión SET e insertar lógica maliciosa
-  "hola@example.com'); REMOVE name; --",
+  // 13. Intenta cerrar una expresión SQL y ejecutar código malicioso
+  "'; SELECT * FROM users; --",
 ];
 
-describe("api/login - Pruebas campo por campo contra inyeccioens", () => {
+describe("api/login - Pruebas campo por campo contra inyecciones SQL", () => {
   for (const field of Object.keys(safePayload)) {
     for (const attack of maliciousInputs) {
       const payload = { ...safePayload, [field]: attack };
